@@ -11,6 +11,7 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 20px;
+            transition: background-color 0.5s ease-in-out;
         }
         .container {
             max-width: 400px;
@@ -18,76 +19,92 @@
             background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
         }
-        h1 {
-            color: #333;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         input, button {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            font-size: 16px;
-            border-radius: 5px;
-        }
-        input {
             border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
         }
         button {
-            background-color: #007bff;
+            background-color: #28a745;
             color: white;
-            border: none;
             cursor: pointer;
+            transition: background 0.3s;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #218838;
         }
-        #result {
+        .result {
             font-size: 18px;
-            font-weight: bold;
+            color: #333;
             margin-top: 10px;
+            animation: fadeIn 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>البحث عن النتيجة</h1>
-        <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
-        <button onclick="searchResult()">عرض النتيجة</button>
-        <p id="result"></p>
+        <input type="text" id="search" placeholder="أدخل اسم الطالب الثلاثي">
+        <button onclick="showResult()">عرض النتيجة</button>
+        <div id="result" class="result"></div>
     </div>
 
     <script>
-        // بيانات الطلاب مع الدرجات
         const students = {
-            "بيجول شنودة وديد": 66, "سعاد فكري صبحي": 66, "ماريان مكسيموس عجبان": 62,
-            "انطونيوس مكرم ارميا": 60, "جرجس نسيم وهبة": 58, "سامح مدحت ذكي": 56,
-            "كاترين ايمن نجيب": 54, "نيفين عهدي نصيف": 54, "سيلفانا سامح فتحي": 54,
-            "ماري ثابت ذكي": 54, "كيرلس ابراهيم توحيد": 52, "بارثينيا القس انطونيوس": 52,
-            "دميانة اشرف وجدي": 52, "فادي اشرف نجيب": 52, "بيشوي صابر عزيز": 50,
-            "تريزة عياد شنودة": 52, "كيرلس ملاك سمير": 48, "دميانة عاطف جرجس": 48,
-            "رشا فيليب فهمي": 46, "مريم سعيد كمال": 46, "شادي سامي صبري": 46,
-            "كريستين حنا نصيف": 46, "عماد نعيم بشري": 44, "اميرة كامل حنين": 42,
-            "مريم ماهر وليم": 42, "ماريا اشرف نجيب": 40, "وردة رضا ابراهيم": 30,
+            "بيجول شنودة وديد": 66,
+            "سعاد فكري صبحي": 66,
+            "ماريان مكسيموس عجبان": 62,
+            "انطونيوس مكرم ارميا": 60,
+            "جرجس نسيم وهبة": 58,
+            "سامح مدحت ذكي": 56,
+            "كاترين ايمن نجيب": 54,
+            "نيفين عهدي نصيف": 54,
+            "سيلفانا سامح فتحي": 54,
+            "ماري ثابت ذكي": 54,
+            "كيرلس ابراهيم توحيد": 52,
+            "بارثينيا القس انطونيوس": 52,
+            "دميانة اشرف وجدي": 52,
+            "فادي اشرف نجيب": 52,
+            "بيشوي صابر عزيز": 50,
+            "تريزة عياد شنودة": 52,
+            "كيرلس ملاك سمير": 48,
+            "دميانة عاطف جرجس": 48,
+            "رشا فيليب فهمي": 46,
+            "مريم سعيد كمال": 46,
+            "شادي سامي صبري": 46,
+            "كريستين حنا نصيف": 46,
+            "عماد نعيم بشري": 44,
+            "اميرة كامل حنين": 42,
+            "مريم ماهر وليم": 42,
+            "ماريا اشرف نجيب": 40,
+            "وردة رضا ابراهيم": 30,
             "ماري خلف الله بشاي": 28
         };
 
-        function searchResult() {
-            let name = document.getElementById("studentName").value.trim();
-            let resultElement = document.getElementById("result");
+        function normalizeText(text) {
+            return text.trim().replace(/\s+/g, " ");
+        }
 
-            if (name === "") {
-                resultElement.innerHTML = "يرجى إدخال الاسم!";
-                resultElement.style.color = "red";
-                return;
-            }
-
-            if (students[name] !== undefined) {
-                resultElement.innerHTML = `النتيجة: ${students[name]}`;
-                resultElement.style.color = "green";
+        function showResult() {
+            let searchInput = normalizeText(document.getElementById("search").value);
+            let resultDiv = document.getElementById("result");
+            
+            if (students[searchInput]) {
+                resultDiv.innerHTML = `النتيجة: ${students[searchInput]}`;
+                resultDiv.style.color = "green";
             } else {
-                resultElement.innerHTML = "الاسم غير موجود!";
-                resultElement.style.color = "red";
+                resultDiv.innerHTML = "الاسم غير موجود أو به خطأ إملائي";
+                resultDiv.style.color = "red";
             }
         }
     </script>
