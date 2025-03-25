@@ -23,4 +23,73 @@
         h1 {
             color: #333;
         }
-        input, button
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        input {
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>البحث عن النتيجة</h1>
+        <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
+        <button onclick="searchResult()">عرض النتيجة</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        // بيانات الطلاب مع الدرجات
+        const students = {
+            "بيجول شنودة وديد": 66, "سعاد فكري صبحي": 66, "ماريان مكسيموس عجبان": 62,
+            "انطونيوس مكرم ارميا": 60, "جرجس نسيم وهبة": 58, "سامح مدحت ذكي": 56,
+            "كاترين ايمن نجيب": 54, "نيفين عهدي نصيف": 54, "سيلفانا سامح فتحي": 54,
+            "ماري ثابت ذكي": 54, "كيرلس ابراهيم توحيد": 52, "بارثينيا القس انطونيوس": 52,
+            "دميانة اشرف وجدي": 52, "فادي اشرف نجيب": 52, "بيشوي صابر عزيز": 50,
+            "تريزة عياد شنودة": 52, "كيرلس ملاك سمير": 48, "دميانة عاطف جرجس": 48,
+            "رشا فيليب فهمي": 46, "مريم سعيد كمال": 46, "شادي سامي صبري": 46,
+            "كريستين حنا نصيف": 46, "عماد نعيم بشري": 44, "اميرة كامل حنين": 42,
+            "مريم ماهر وليم": 42, "ماريا اشرف نجيب": 40, "وردة رضا ابراهيم": 30,
+            "ماري خلف الله بشاي": 28
+        };
+
+        function searchResult() {
+            let name = document.getElementById("studentName").value.trim();
+            let resultElement = document.getElementById("result");
+
+            if (name === "") {
+                resultElement.innerHTML = "يرجى إدخال الاسم!";
+                resultElement.style.color = "red";
+                return;
+            }
+
+            if (students[name] !== undefined) {
+                resultElement.innerHTML = `النتيجة: ${students[name]}`;
+                resultElement.style.color = "green";
+            } else {
+                resultElement.innerHTML = "الاسم غير موجود!";
+                resultElement.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
