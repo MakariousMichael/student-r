@@ -11,52 +11,53 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 20px;
-            transition: background-color 0.5s ease-in-out;
         }
         .container {
-            max-width: 400px;
+            max-width: 600px;
             margin: auto;
             background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 1s ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        h1 {
+            color: #333;
         }
-        input, button {
-            width: 100%;
+        input {
+            width: 80%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
+            text-align: right;
         }
         button {
-            background-color: #28a745;
+            padding: 10px 20px;
+            border: none;
+            background: #28a745;
             color: white;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s;
         }
         button:hover {
-            background-color: #218838;
+            background: #218838;
         }
-        .result {
+        .student {
+            padding: 10px;
+            margin: 5px 0;
+            background: #e0e0e0;
+            border-radius: 5px;
             font-size: 18px;
-            color: #333;
-            margin-top: 10px;
-            animation: fadeIn 0.5s ease-in-out;
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>البحث عن النتيجة</h1>
-        <input type="text" id="search" placeholder="أدخل اسم الطالب الثلاثي">
-        <button onclick="showResult()">عرض النتيجة</button>
-        <div id="result" class="result"></div>
+        <h1>نتائج الطلاب</h1>
+        <input type="text" id="search" placeholder="اكتب الاسم الثلاثي">
+        <button onclick="searchStudent()">عرض النتيجة</button>
+        <div id="result"></div>
     </div>
 
     <script>
@@ -91,20 +92,15 @@
             "ماري خلف الله بشاي": 28
         };
 
-        function normalizeText(text) {
-            return text.trim().replace(/\s+/g, " ");
-        }
-
-        function showResult() {
-            let searchInput = normalizeText(document.getElementById("search").value);
+        function searchStudent() {
+            let name = document.getElementById("search").value.trim();
             let resultDiv = document.getElementById("result");
-            
-            if (students[searchInput]) {
-                resultDiv.innerHTML = `النتيجة: ${students[searchInput]}`;
-                resultDiv.style.color = "green";
+            resultDiv.innerHTML = "";
+
+            if (students[name]) {
+                resultDiv.innerHTML = `<div class='student' style='display: block;'>${name} - ${students[name]}</div>`;
             } else {
-                resultDiv.innerHTML = "الاسم غير موجود أو به خطأ إملائي";
-                resultDiv.style.color = "red";
+                resultDiv.innerHTML = `<div class='student' style='display: block; background: #ffcccc;'>الاسم غير موجود</div>`;
             }
         }
     </script>
